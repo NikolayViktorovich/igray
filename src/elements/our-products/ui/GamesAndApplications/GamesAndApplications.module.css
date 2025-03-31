@@ -1,0 +1,12 @@
+.box {
+	@apply relative text-left w-full bg-[url('/images/home/pc-bg.jpg')] rounded-xl_3 bg-cover bg-center min-h-size_2 px-5 xl_1:px-10 py-8 lg:min-h-[265px] overflow-hidden lg:cursor-default;
+}
+
+.box::before {
+	content: '';
+	@apply opacity-0 absolute inset-0 bg-primary_opacity_color transition-opacity duration-200;
+}
+
+.box:hover::before {
+	@apply opacity-100;
+}

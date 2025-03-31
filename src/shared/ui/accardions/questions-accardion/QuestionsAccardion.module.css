@@ -1,0 +1,10 @@
+.arrow_wrapper {
+	@apply flex justify-center items-start absolute top-1.5 right-2 p-2.5 rounded-xl;
+	background: linear-gradient(
+		135deg,
+		#e4faf3 0%,
+		rgba(228, 250, 243, 0.29) 34.5%,
+		#e4faf3 67%,
+		rgba(228, 250, 243, 0.34) 100%
+	);
+}
