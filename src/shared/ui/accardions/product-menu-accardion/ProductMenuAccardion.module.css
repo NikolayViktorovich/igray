@@ -1,0 +1,9 @@
+.subLink {
+	background: linear-gradient(
+		134deg,
+		#e4faf3 0%,
+		rgba(228, 250, 243, 0.29) 34.5%,
+		#e4faf3 67%,
+		rgba(228, 250, 243, 0.34) 100%
+	);
+}

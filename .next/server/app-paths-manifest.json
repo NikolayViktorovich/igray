@@ -1,0 +1,4 @@
+{
+  "/(user)/page": "app/(user)/page.js",
+  "/(user)/refund/page": "app/(user)/refund/page.js"
+}

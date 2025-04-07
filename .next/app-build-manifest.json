@@ -1,0 +1,28 @@
+{
+  "pages": {
+    "/(user)/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(user)/page.css",
+      "static/chunks/app/(user)/page.js"
+    ],
+    "/(user)/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(user)/layout.css",
+      "static/chunks/app/(user)/layout.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/layout.css",
+      "static/chunks/app/layout.js"
+    ],
+    "/(user)/refund/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(user)/refund/page.css",
+      "static/chunks/app/(user)/refund/page.js"
+    ]
+  }
+}

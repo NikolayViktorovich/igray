@@ -1,0 +1,4 @@
+.text {
+	@apply font-steppe md:text-4xl 2xl:text-5xl font-extrabold leading-[1.2] text-xl_2 text-white;
+	text-shadow: 0px 0px 24px #ffffff80;
+}
