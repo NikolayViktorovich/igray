@@ -18,11 +18,26 @@
       "static/css/app/layout.css",
       "static/chunks/app/layout.js"
     ],
-    "/(user)/refund/page": [
+    "/(user)/[...not-found]/page": [
       "static/chunks/webpack.js",
       "static/chunks/main-app.js",
-      "static/css/app/(user)/refund/page.css",
-      "static/chunks/app/(user)/refund/page.js"
+      "static/chunks/app/(user)/[...not-found]/page.js"
+    ],
+    "/(user)/contacts/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(user)/contacts/page.js"
+    ],
+    "/(user)/privacy-policy/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/chunks/app/(user)/privacy-policy/page.js"
+    ],
+    "/(user)/pc/steam/page": [
+      "static/chunks/webpack.js",
+      "static/chunks/main-app.js",
+      "static/css/app/(user)/pc/steam/page.css",
+      "static/chunks/app/(user)/pc/steam/page.js"
     ]
   }
 }

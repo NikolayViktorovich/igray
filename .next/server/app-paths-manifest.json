@@ -1,4 +1,6 @@
 {
   "/(user)/page": "app/(user)/page.js",
-  "/(user)/refund/page": "app/(user)/refund/page.js"
+  "/(user)/privacy-policy/page": "app/(user)/privacy-policy/page.js",
+  "/(user)/pc/steam/page": "app/(user)/pc/steam/page.js",
+  "/(user)/[...not-found]/page": "app/(user)/[...not-found]/page.js"
 }

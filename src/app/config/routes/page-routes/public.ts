@@ -1,139 +1,143 @@
+// app/config/routes/page-routes/public.ts
 import { UrlBuilder } from '../base.config'
 
 class PublicUrl extends UrlBuilder {
-	constructor() {
-		super()
-	}
+    constructor() {
+        super()
+    }
 
-	home(): string {
-		return this.root('/')
-	}
+    home(): string {
+        return this.root('/')
+    }
 
-	contacts(): string {
-		return this.root('/contacts')
-	}
+    contacts(): string {
+        return this.root('/contacts')
+    }
 
-	pc(): string {
-		return this.root('/pc')
-	}
+    pc(): string {
+        return this.root('/pc')
+    }
 
-	refund(): string {
-		return this.root('/refund')
-	}
+    refund(): string {
+        return this.root('/refund')
+    }
 
-	steam(): string {
-		return this.root('/pc/steam')
-	}
+    steam(): string {
+        return this.root('/pc/steam')
+    }
 
-	frequentQuestions(): string {
-		return this.root('/frequent-questions')
-	}
+    frequentQuestions(): string {
+        return this.root('/frequent-questions')
+    }
 
-	customerReviews(): string {
-		return this.root('/customer-reviews')
-	}
+    customerReviews(): string {
+        return this.root('/customer-reviews')
+    }
 
-	aboutServices(): string {
-		return this.root('/about-services')
-	}
+    aboutServices(): string {
+        return this.root('/about-services')
+    }
 
-	xboxGame(): string {
-		return this.root('/xbox-game')
-	}
+    xboxGame(): string {
+        return this.root('/xbox-game')
+    }
 
-	playstationGame(): string {
-		return this.root('/playstation-game')
-	}
+    playstationGame(): string {
+        return this.root('/playstation-game')
+    }
 
-	notFound(): string {
-		return this.root('/404')
-	}
+    notFound(): string {
+        return this.root('/404')
+    }
+    privacyPolicy(): string {
+        return this.root('/privacy-policy')
+    }
 
-	// auth(): string {
-	// 	return this.root('/auth')
-	// }
+    // auth(): string {
+    //     return this.root('/auth')
+    // }
 
-	// explorer(query: string = ''): string {
-	// 	return this.withQuery('/explorer', query)
-	// }
+    // explorer(query: string = ''): string {
+    //     return this.withQuery('/explorer', query)
+    // }
 
-	// product(id: string = ''): string {
-	// 	return this.root(`/product/${id}`)
-	// }
+    // product(id: string = ''): string {
+    //     return this.root(`/product/${id}`)
+    // }
 
-	// category(id: string = ''): string {
-	// 	return this.root(`/category/${id}`)
-	// }
+    // category(id: string = ''): string {
+    //     return this.root(`/category/${id}`)
+    // }
 }
 
 export const publicUrl = new PublicUrl()
 
 // class DashboardUrl extends UrlBuilder {
-// 	constructor() {
-// 		super('/dashboard')
-// 	}
+//     constructor() {
+//         super('/dashboard')
+//     }
 
-// 	home(): string {
-// 		return this.root('/')
-// 	}
+//     home(): string {
+//         return this.root('/')
+//     }
 
-// 	favorites(): string {
-// 		return this.root('/favorites')
-// 	}
+//     favorites(): string {
+//         return this.root('/favorites')
+//     }
 // }
 
 // class StoreUrl extends UrlBuilder {
-// 	constructor() {
-// 		super('/store')
-// 	}
+//     constructor() {
+//         super('/store')
+//     }
 
-// 	home(storeId: string = ''): string {
-// 		return this.root(`/${storeId}`)
-// 	}
+//     home(storeId: string = ''): string {
+//         return this.root(`/${storeId}`)
+//     }
 
-// 	products(storeId: string = ''): string {
-// 		return this.root(`/${storeId}/products`)
-// 	}
+//     products(storeId: string = ''): string {
+//         return this.root(`/${storeId}/products`)
+//     }
 
-// 	productCreate(storeId: string = ''): string {
-// 		return this.root(`/${storeId}/products/create`)
-// 	}
+//     productCreate(storeId: string = ''): string {
+//         return this.root(`/${storeId}/products/create`)
+//     }
 
-// 	productEdit(storeId: string = '', id: string = ''): string {
-// 		return this.root(`/${storeId}/products/${id}`)
-// 	}
+//     productEdit(storeId: string = '', id: string = ''): string {
+//         return this.root(`/${storeId}/products/${id}`)
+//     }
 
-// 	categories(storeId: string = ''): string {
-// 		return this.root(`/${storeId}/categories`)
-// 	}
+//     categories(storeId: string = ''): string {
+//         return this.root(`/${storeId}/categories`)
+//     }
 
-// 	categoryCreate(storeId: string = ''): string {
-// 		return this.root(`/${storeId}/categories/create`)
-// 	}
+//     categoryCreate(storeId: string = ''): string {
+//         return this.root(`/${storeId}/categories/create`)
+//     }
 
-// 	categoryEdit(storeId: string = '', id: string = ''): string {
-// 		return this.root(`/${storeId}/categories/${id}`)
-// 	}
+//     categoryEdit(storeId: string = '', id: string = ''): string {
+//         return this.root(`/${storeId}/categories/${id}`)
+//     }
 
-// 	colors(storeId: string = ''): string {
-// 		return this.root(`/${storeId}/colors`)
-// 	}
+//     colors(storeId: string = ''): string {
+//         return this.root(`/${storeId}/colors`)
+//     }
 
-// 	colorCreate(storeId: string = ''): string {
-// 		return this.root(`/${storeId}/colors/create`)
-// 	}
+//     colorCreate(storeId: string = ''): string {
+//         return this.root(`/${storeId}/colors/create`)
+//     }
 
-// 	colorEdit(storeId: string = '', id: string = ''): string {
-// 		return this.root(`/${storeId}/colors/${id}`)
-// 	}
+//     colorEdit(storeId: string = '', id: string = ''): string {
+//         return this.root(`/${storeId}/colors/${id}`)
+//     }
 
-// 	reviews(storeId: string = ''): string {
-// 		return this.root(`/${storeId}/reviews`)
-// 	}
+//     reviews(storeId: string = ''): string {
+//         return this.root(`/${storeId}/reviews`)
+//     }
 
-// 	settings(storeId: string = ''): string {
-// 		return this.root(`/${storeId}/settings`)
-// 	}
+//     settings(storeId: string = ''): string {
+//         return this.root(`/${storeId}/settings`)
+//     }
 // }
 
 // export const DASHBOARD_URL = new DashboardUrl()
