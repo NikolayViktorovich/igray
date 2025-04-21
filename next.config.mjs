@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    SERVER_URL: igray24.ru,
+    SERVER_URL: process.env.SERVER_URL,
   },
   reactStrictMode: true,
   swcMinify: true,
