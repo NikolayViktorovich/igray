@@ -11,7 +11,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import { ReviewsSlide } from './ReviewsSlide'
 
 export const ReviewsSlider = () => {
-	const swiperRef = useRef<SwiperType>()
+	const swiperRef = useRef<SwiperType | null>(null);
 
 	return (
 		<div className='relative py-4 bg-gradient-to-r from-[#E4FAF3] via-[rgba(228,250,243,0.29)] to-[#E4FAF3] rounded-[34px] p-[2px] sm:p-[5px] lg:p-[10px] xl:p-[20px] w-full lg:w-[50%] lg:h-[280px] lg:rounded-[50px]'>
