@@ -1,0 +1,108 @@
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[3]!./src/elements/faq-accordion/ui/QuestionsAccordion.module.css ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************/
+.QuestionsAccordion_arrow_wrapper__Z4gj7 {
+	position: absolute;
+	top: 0.375rem;
+	right: 0.5rem;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	border-radius: 0.75rem;
+	padding: 0.625rem;
+	background: linear-gradient(
+		135deg,
+		#e4faf3 0%,
+		rgba(228, 250, 243, 0.29) 34.5%,
+		#e4faf3 67%,
+		rgba(228, 250, 243, 0.34) 100%
+	)
+}
+
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[3]!./src/shared/ui/proccesing-personal-data-panel/ProccesingPersonalDataPanel.module.css ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************/
+.ProccesingPersonalDataPanel_container__5ISx5 {
+	display: block;
+	position: relative;
+	font-size: 20px;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+}
+
+.ProccesingPersonalDataPanel_container__5ISx5 input {
+	position: absolute;
+	height: 0px;
+	width: 0px;
+	cursor: pointer;
+	opacity: 0;
+}
+
+.ProccesingPersonalDataPanel_checkmark__RSq90 {
+	position: relative;
+	display: block;
+	height: 1.25rem;
+	width: 1.25rem;
+	border-radius: 6px;
+	background-color: var(--primary-color);
+}
+
+.ProccesingPersonalDataPanel_container__5ISx5:hover input ~ .ProccesingPersonalDataPanel_checkmark__RSq90 {
+	/* // background-color: #ccc; */
+}
+
+.ProccesingPersonalDataPanel_container__5ISx5 input:checked ~ .ProccesingPersonalDataPanel_checkmark__RSq90 {
+	background-color: var(--primary-color);
+}
+
+.ProccesingPersonalDataPanel_checkmark__RSq90:after {
+	content: '';
+	position: absolute;
+	display: none;
+}
+
+.ProccesingPersonalDataPanel_container__5ISx5 input:checked ~ .ProccesingPersonalDataPanel_checkmark__RSq90:after {
+	display: block;
+}
+
+.ProccesingPersonalDataPanel_container__5ISx5 .ProccesingPersonalDataPanel_checkmark__RSq90:after {
+	left: 50%;
+	top: 50%;
+	height: 0.625rem;
+	width: 0.625rem;
+	transform: translate(-50%, -50%);
+	background-image: url('/images/icons/check.svg');
+	background-repeat: no-repeat;
+}
+
+.ProccesingPersonalDataPanel_text___qmF9 {
+	font-size: 0.75rem;
+	line-height: 1rem;
+	font-weight: 500;
+	color: var(--gray-color);
+}
+
+/*!*************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[2]!./node_modules/next/dist/build/webpack/loaders/postcss-loader/src/index.js??ruleSet[1].rules[14].oneOf[7].use[3]!./src/views/steam/ui/SteamBanner.module.css ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************/
+.SteamBanner_text__dKRCc {
+	font-family: var(--font-steppe), sans-serif;
+	font-size: 2rem;
+	font-weight: 800;
+	line-height: 1.2;
+	--tw-text-opacity: 1;
+	color: rgb(255 255 255 / var(--tw-text-opacity, 1));
+}@media (min-width: 768px) {.SteamBanner_text__dKRCc {
+		font-size: 2.25rem;
+		line-height: 2.5rem;
+	}
+}@media (min-width: 1536px) {.SteamBanner_text__dKRCc {
+		font-size: 3rem;
+		line-height: 1;
+	}
+}.SteamBanner_text__dKRCc {
+	text-shadow: 0px 0px 24px #ffffff80;
+}
+
