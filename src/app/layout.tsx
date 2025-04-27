@@ -52,7 +52,7 @@ export default function RootLayout({
     return (
         <html lang='ru'>
             <head>
-                <link rel="icon" href="/favicon.ico" />
+			<link rel="icon" href="/favicon.ico?v=2" />
             </head>
             <body className={`${onset.className}`}>
                 <Providers>{children}</Providers>
