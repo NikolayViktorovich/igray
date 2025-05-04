@@ -4,7 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import { useServiceStore } from '@/shared/store/service.store'
 import { Heading } from '@/shared/ui/Heading'
