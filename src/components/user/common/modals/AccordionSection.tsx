@@ -14,8 +14,9 @@ const AccordionSection = ({ title, children }: AccordionSectionProps) => {
         <div className="border-2 border-gray-300 rounded-2xl mb-4 hover:shadow-xl transition-all duration-300">
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                onTouchStart={() => setIsOpen(!isOpen)}
-                className="w-full flex justify-between items-center text-xl font-semibold bg-white rounded-2xl p-4 sm:p-3 focus:outline-none cursor-pointer min-h-[60px] touch-action-manipulation"
+                className="w-full flex justify-between items-center text-xl font-semibold bg-white rounded-2xl p-4 sm:p-3 focus:outline-none cursor-pointer min-h-[64px] touch-action-manipulation"
+                aria-expanded={isOpen}
+                aria-controls={`accordion-content-${title}`}
                 style={{ zIndex: 10 }}
             >
                 <span className="text-left break-words text-xl sm:text-lg">
@@ -40,8 +41,8 @@ const AccordionSection = ({ title, children }: AccordionSectionProps) => {
                 </svg>
             </button>
             <div
-                className={`overflow-hidden transition-all duration-300 ease-in-out ${isOpen ? 'opacity-100' : 'max-h-0 opacity-0'}`}
-                style={{ maxHeight: isOpen ? 'none' : '0' }}
+                className={`overflow-hidden transition-max-height duration-300 ease-in-out ${isOpen ? 'opacity-100 max-h-[100rem]' : 'max-h-0 opacity-0'}`}
+                id={`accordion-content-${title}`}
             >
                 <div className="p-4 sm:p-3 overflow-y-auto max-h-[80vh] sm:max-h-[70vh]">
                     {children}
