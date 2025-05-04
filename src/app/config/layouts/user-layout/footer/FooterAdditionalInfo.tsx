@@ -13,12 +13,12 @@ export const FooterAdditionalInfo = () => {
             href: publicUrl.contacts(),
         },
         {
-            label: 'Политика конфиденциальности',
+            label: 'Оферта и политика конфиденциальности',
 			href: publicUrl.privacyPolicy(),
         },
         {
             label: 'Условия использования',
-            href: '#',
+            href: publicUrl.terms(),
         },
     ]
 

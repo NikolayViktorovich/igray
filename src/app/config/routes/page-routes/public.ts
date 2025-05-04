@@ -49,8 +49,13 @@ class PublicUrl extends UrlBuilder {
     notFound(): string {
         return this.root('/404')
     }
+
     privacyPolicy(): string {
-        return this.root('/privacy-policy')
+        return this.root('/policy')
+    }
+
+    terms(): string {
+        return this.root('/terms')
     }
 
     // auth(): string {
