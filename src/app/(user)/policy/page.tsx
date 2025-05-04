@@ -31,9 +31,9 @@ export default function PolicyPage() {
                 <span>Оферта и политика конфиденциальности</span>
             </nav>
 
-            <h1 className="text-3xl font-bold mb-6 bg-white rounded-xl p-6 text-center max-w-prose mx-auto md:text-2xl sm:text-xl">
-                Оферта и политика конфиденциальности
-            </h1>
+            <h1 className="text-[20px] sm:text-[24px] md:text-[30px] lg:text-[36px] font-bold mb-4 bg-white rounded-xl px-4 py-3 text-center w-full max-w-full leading-snug break-words">
+  Оферта и политика конфиденциальности
+</h1>
             <section className="prose max-w-none">
                 <h2 className="text-2xl font-semibold mt-6 mb-4 bg-white rounded-xl p-4 text-center max-w-prose mx-auto md:text-xl sm:text-lg">
                     Публичная оферта

@@ -31,7 +31,7 @@ export default function TermsPage() {
                 <span>Пользовательское соглашение</span>
             </nav>
 
-            <h1 className="text-3xl font-bold mb-6 bg-white rounded-xl p-6 text-center max-w-prose mx-auto md:text-2xl sm:text-xl">
+            <h1 className="text-[20px] sm:text-[24px] md:text-[30px] lg:text-[36px] font-bold mb-4 bg-white rounded-xl px-4 py-3 text-center w-full max-w-full leading-snug break-words">
                 Пользовательское соглашение
             </h1>
             <section className="prose max-w-none">
