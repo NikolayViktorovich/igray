@@ -3,7 +3,7 @@ import { z } from 'zod'
 export const formSubscribeValidate = z.object({
     email: z.string().email({ message: 'Неверный формат email' }),
     promocode: z.string().optional(),
-    paymentMethod: z.enum(['CARD', 'SPB'], {
+    paymentMethod: z.enum(['CARD', 'SPB', 'USDT'], {
         message: 'Выберите способ оплаты'
     })
 })
