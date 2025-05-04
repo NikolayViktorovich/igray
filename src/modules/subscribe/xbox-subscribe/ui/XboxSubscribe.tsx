@@ -9,58 +9,68 @@ import { useServiceStore } from '@/shared/store/service.store'
 import { Heading } from '@/shared/ui/Heading'
 import { TextField } from '@/shared/ui/form/TextField'
 import { cn } from '@/shared/utils/clsx'
+import { MethodsPayment } from './MethodsPayment'
 
 import {
     formSubscribeValidate,
     signaturePeriodOptions
 } from '../model/constants'
-import type { FormSubscribeSchema } from '../model/types'
+import type { FormSubscribeSchema, PaymentMethods } from '../model/types'
+
+const accountTypeOptions = [
+    { label: 'Новый', value: 'new' },
+    { label: 'Старый', value: 'old' }
+]
 
 export const XboxSubscribe = () => {
-    const [selectedSignaturePeriod, setSelectedSignaturePeriod] = useState(
-        signaturePeriodOptions[0].value
-    )
+    const [selectedSignaturePeriod, setSelectedSignaturePeriod] = useState(signaturePeriodOptions[0].value)
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethods>('CARD')
+    const [selectedAccountType, setSelectedAccountType] = useState(accountTypeOptions[0].value)
 
     const { setIsModalVisible } = useServiceStore()
 
-    const form = useForm({
+    const form = useForm<FormSubscribeSchema>({
         resolver: zodResolver(formSubscribeValidate),
         defaultValues: {
             email: '',
-            promocode: ''
+            promocode: '',
+            paymentMethod: 'CARD' as const
         }
     })
 
     const promocode = form.watch('promocode')
 
     const labelSignaturePeriod = useMemo(() => {
-        return signaturePeriodOptions.find(
-            item => item.value === selectedSignaturePeriod
-        )?.label
+        return signaturePeriodOptions.find(item => item.value === selectedSignaturePeriod)?.label
     }, [selectedSignaturePeriod])
+
+    const price = useMemo(() => {
+        return signaturePeriodOptions.find(item => item.value === selectedSignaturePeriod)?.label.split(' - ')[1] || '1090₽'
+    }, [selectedSignaturePeriod])
+
+    const labelAccountType = useMemo(() => {
+        return accountTypeOptions.find(item => item.value === selectedAccountType)?.label
+    }, [selectedAccountType])
 
     const onSubscribe: SubmitHandler<FormSubscribeSchema> = data => {
         console.log('RESULT', {
-            ...data
+            ...data,
+            signaturePeriod: selectedSignaturePeriod,
+            accountType: selectedAccountType
         })
-
         setIsModalVisible(true)
     }
 
     const onCheckingPromocode = () => {
-        if (!promocode.length) {
-            form.setError('promocode', {
-                message: 'Введите промокод'
-            })
-
+        if (!promocode?.length) {
+            form.setError('promocode', { message: 'Введите промокод' })
             return
         }
-
         setIsModalVisible(true)
     }
 
     useEffect(() => {
-        if (promocode.length) {
+        if (promocode?.length) {
             form.clearErrors('promocode')
         }
     }, [promocode, form])
@@ -73,18 +83,15 @@ export const XboxSubscribe = () => {
                 </Heading>
 
                 <div className='grid grid-cols-1 xs:grid-cols-3 gap-1.5 mb-4'>
-                    <div className='flex items-center xs:col-span-2  gap-1.5 p-2.5 border border-border_gray rounded-xl'>
+                    <div className='flex items-center xs:col-span-2 gap-1.5 p-2.5 border border-border_gray rounded-xl'>
                         <Image
                             src='/images/icons/time.svg'
                             width='30'
                             height='30'
                             alt='Иконка времени'
                         />
-
                         <div className='text-xs'>
-                            <span className='text-gray_color'>
-                                Активация на Ваш аккаунт
-                            </span>
+                            <span className='text-gray_color'>Активация на Ваш аккаунт</span>
                             <p>В течение 10 Минут</p>
                         </div>
                     </div>
@@ -94,7 +101,6 @@ export const XboxSubscribe = () => {
                             <span className='text-gray_color'>Платформа</span>
                             <p>Xbox</p>
                         </div>
-
                         <Image
                             src='/images/icons/mini-arrow.svg'
                             width='12'
@@ -107,10 +113,31 @@ export const XboxSubscribe = () => {
                 <FormProvider {...form}>
                     <form onSubmit={form.handleSubmit(onSubscribe)}>
                         <div className='flex gap-2 text-xs mb-2.5'>
+                            <p className='text-gray_color'>Тип аккаунта:</p>
+                            <span className='text-primary_color'>{labelAccountType}</span>
+                        </div>
+
+                        <div className='mb-4 flex flex-wrap gap-1.5'>
+                            {accountTypeOptions.map(item => (
+                                <button
+                                    key={item.value}
+                                    type='button'
+                                    onClick={() => setSelectedAccountType(item.value)}
+                                    className={cn(
+                                        'bg-[linear-gradient(100.65deg,_#E4FAF3_0.34%,_rgba(228,250,243,0.29)_47.86%,_#E4FAF3_92.62%,_rgba(228,250,243,0.34)_138.07%)] h-9 px-5 rounded-[14px] text-xs md:text-sm font-medium text-gray_dark_color outline outline-transparent duration-200 transition-outline outline-1 hover:outline-bg_color active:outline-bg_color',
+                                        {
+                                            'outline-bg_color': item.value === selectedAccountType
+                                        }
+                                    )}
+                                >
+                                    {item.label}
+                                </button>
+                            ))}
+                        </div>
+
+                        <div className='flex gap-2 text-xs mb-2.5'>
                             <p className='text-gray_color'>Срок подписки:</p>
-                            <span className='text-primary_color'>
-                                {labelSignaturePeriod}
-                            </span>
+                            <span className='text-primary_color'>{labelSignaturePeriod}</span>
                         </div>
 
                         <div className='mb-4 flex flex-wrap gap-1.5'>
@@ -118,15 +145,11 @@ export const XboxSubscribe = () => {
                                 <button
                                     key={item.value}
                                     type='button'
-                                    onClick={() =>
-                                        setSelectedSignaturePeriod(item.value)
-                                    }
+                                    onClick={() => setSelectedSignaturePeriod(item.value)}
                                     className={cn(
                                         'bg-[linear-gradient(100.65deg,_#E4FAF3_0.34%,_rgba(228,250,243,0.29)_47.86%,_#E4FAF3_92.62%,_rgba(228,250,243,0.34)_138.07%)] h-9 px-5 rounded-[14px] text-xs md:text-sm font-medium text-gray_dark_color outline outline-transparent duration-200 transition-outline outline-1 hover:outline-bg_color active:outline-bg_color',
                                         {
-                                            'outline-bg_color':
-                                                item.value ===
-                                                selectedSignaturePeriod
+                                            'outline-bg_color': item.value === selectedSignaturePeriod
                                         }
                                     )}
                                 >
@@ -142,7 +165,6 @@ export const XboxSubscribe = () => {
                                 label='Электронная почта'
                                 placeholder='name@mail.com'
                             />
-
                             <div className='relative'>
                                 <TextField
                                     className='pr-32 md:w-80'
@@ -150,7 +172,6 @@ export const XboxSubscribe = () => {
                                     label='У вас есть промокод?'
                                     placeholder='Уменьши комиссию...'
                                 />
-
                                 <button
                                     type='button'
                                     onClick={onCheckingPromocode}
@@ -161,11 +182,19 @@ export const XboxSubscribe = () => {
                             </div>
                         </div>
 
+                        <MethodsPayment
+                            currentPaymentType={selectedPaymentMethod}
+                            onChange={(method) => {
+                                setSelectedPaymentMethod(method)
+                                form.setValue('paymentMethod', method)
+                            }}
+                        />
+
                         <button
                             type='submit'
-                            className='bg-bg_color w-full hover:shadow-[0_2px_#469677]  mx-auto block py-4 rounded-[18px] text-white border-none shadow-[0_5px_#469677] active:shadow-[0_2px_#469677] active:translate-y-[4px] transition-all'
+                            className='bg-bg_color w-full hover:shadow-[0_2px_#469677] mx-auto block py-4 rounded-[14px] text-white border-none shadow-[0_5px_#469677] active:shadow-[0_2px_#469677] active:translate-y-[4px] transition-all'
                         >
-                            Оформить • 1090₽
+                            Оформить • {price}
                         </button>
                     </form>
                 </FormProvider>

@@ -37,7 +37,7 @@ export const SocialMediaList: FC<IProps> = ({ className }) => {
             <SocialMediaItem
                 href='https://vk.com/igray24'
                 svg={'images/icons/vk.svg'}
-                name={'Вконтаке'}
+                name={'Вконтакте'}
             />
             <SocialMediaItem
                 href='https://api.whatsapp.com/send/?phone=79193461158&text&type=phone_number&app_absent=0'
