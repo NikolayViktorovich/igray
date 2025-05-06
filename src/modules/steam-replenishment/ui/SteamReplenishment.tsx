@@ -157,7 +157,6 @@ export const SteamReplenishment = () => {
 
   useEffect(() => {
     if (sendPaymentSuccess && sendPaymentData?.link) {
-      // Заменяем домен в ссылке перед перенаправлением
       const newLink = sendPaymentData.link.replace(
         'igray24.ru',
         'igray24back.ru'
