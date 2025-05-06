@@ -57,7 +57,9 @@ class PublicUrl extends UrlBuilder {
     terms(): string {
         return this.root('/terms')
     }
-
+    partners(): string {
+        return this.root('/partners')
+    }
     // auth(): string {
     //     return this.root('/auth')
     // }

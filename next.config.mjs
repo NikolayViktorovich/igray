@@ -6,6 +6,7 @@ const nextConfig = {
 	  serverActions: true,
 	  trustedHosts: [
 		'igray24.ru',
+		'igray24back.ru',
 	  ],
 	},
   };

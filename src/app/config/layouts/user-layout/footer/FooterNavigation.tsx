@@ -25,7 +25,7 @@ export const FooterNavigation = () => {
 				<NavItem
 					className='hover:text-gray-400 active:text-gray-400 transition-colors duration-300'
 					label={'Партнерам'}
-					href={'#'}
+					href="/partners"
 				/>
 				<NavItem
 					className='hover:text-gray-400 active:text-gray-400 transition-colors duration-300'
