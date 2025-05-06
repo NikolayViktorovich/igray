@@ -20,9 +20,7 @@ export const steamService = {
 
 	async pay(payload: IPayment): Promise<IPaymentResponse> {
 		return (
-			await this.axios.post(publicApiUrl.steamSendData(), {
-				...payload
-			})
+		  await axiosClassic.post('/api/steam', payload)
 		).data
-	}
+	  }
 }
