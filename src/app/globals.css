@@ -205,3 +205,36 @@ input[type='range']::-moz-range-thumb {
 #nprogress .bar {
     @apply bg-secondary_color !important;
 }
+.text-shadow-light {
+    text-shadow: 0 0 10px rgba(255,255,255,0.1), 0 0 20px rgba(255,255,255,0.1);
+  }
+  @media (min-width: 768px) and (max-width: 1060px) {
+    .hide-girl-in-range {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+  
+    .hide-game-in-range {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+  }
+  
+  .hide-girl-in-range {
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .hide-game-in-range {
+    transition: opacity 0.5s ease-in-out;
+  }
+  @layer components {
+    @media (min-width: 768px) and (max-width: 1217px) {
+      .partners-title-adjusted {
+        font-size: 32px !important;
+      }
+  
+      .partners-text-adjusted {
+        font-size: 16px !important;
+      }
+    }
+  }
