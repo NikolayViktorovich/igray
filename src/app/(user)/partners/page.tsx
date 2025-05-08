@@ -38,7 +38,10 @@ export default function PartnersPage() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
           viewport={{ once: true }}
-          className="relative z-10 text-white max-w-[600px] mx-auto md:mx-0 md:ml-12 sm:pt-4 przygotowanie sm:mt-[-20px] pb-[180px] sm:pb-0"
+          className="relative z-10 text-white max-w-[600px] mx-auto md:mx-0 md:ml-12 pb-[180px] sm:pb-0 -mt-4 sm:mt-0"
+
+
+
         >
           <span className="inline-block bg-white text-black w-[90px] h-[18px] rounded-[6px] font-onest font-medium text-[12px] leading-[120%] text-center uppercase flex items-center justify-center mt-2 md:mt-6 ml-2 sm:ml-0">
             ПАРТНЕРАМ
