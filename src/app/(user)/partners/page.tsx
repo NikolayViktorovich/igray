@@ -165,7 +165,7 @@ export default function PartnersPage() {
         </span>
       </h2>
 
-      <h2 className="hidden min-[390px]:block md:hidden font-steppe font-extrabold leading-[120%] tracking-[-0.04em]" style={{ fontSize: 'clamp(26px, 6vw, 34px)' }}>
+      <h2 className="hidden min-[390px]:block md:hidden font-steppe font-extrabold leading-[120%] tracking-[-0.04em]" style={{ fontSize: 'clamp(32px, 6vw, 32px)' }}>
         <span className="text-[#4FCA9C] block">Специальные</span>
         <span className="block">
           <span className="text-[#4FCA9C]">цены</span>{' '}
