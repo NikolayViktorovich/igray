@@ -154,7 +154,7 @@ export default function PartnersPage() {
   whileInView={{ opacity: 1, y: 0 }}
   transition={{ duration: 0.8, ease: 'easeOut' }}
   viewport={{ once: true }}
-  className="mt-12 md:mt-0 flex flex-col w-full max-w-[600px] px-4 sm:px-6 md:px-0 md:ml-12"
+  className="mt-[20px] sm:mt-[30px] md:mt-[40px] flex flex-col w-full max-w-[600px] px-4 sm:px-6 md:px-0 md:ml-12"
 >
       {/* Заголовки для разных устройств */}
       <h2 className="block min-[390px]:hidden md:hidden font-steppe font-extrabold leading-[120%] tracking-[-0.04em]" style={{ fontSize: 'clamp(24px, 6vw, 32px)' }}>
@@ -190,17 +190,17 @@ export default function PartnersPage() {
 
       {/* Тексты */}
       <p
-        className="mt-6 md:mt-8 font-onest text-[#1F3238] leading-[140%] tracking-[-0%] overflow-wrap break-word"
-        style={{ fontSize: 'clamp(16px, 1.8vw, 18px)' }}
-      >
-        Мы создаем Телеграм группу с вами, через которую вы можете приобретать все наши товары по спец прайсу.
-      </p>
-      <p
-        className="mt-4 md:mt-6 font-onest text-[#1F3238] leading-[140%] tracking-[-0%] overflow-wrap break-word"
-        style={{ fontSize: 'clamp(16px, 1.8vw, 18px)' }}
-      >
-        Подойдет если вы ищете надежного и быстрого поставщика или хотите увеличить свой ассортимент.
-      </p>
+  className="mt-6 md:mt-8 font-onest text-[#1F3238] leading-[140%] tracking-[-0%] overflow-wrap break-word"
+  style={{ fontSize: 'clamp(18px, 2.2vw, 20px)' }} // Добавим clamp для адаптивности
+>
+  Мы создаем Телеграм группу с вами, через которую вы можете приобретать все наши товары по спец прайсу.
+</p>
+<p
+  className="mt-4 md:mt-6 font-onest text-[#1F3238] leading-[140%] tracking-[-0%] overflow-wrap break-word"
+  style={{ fontSize: 'clamp(18px, 2.2vw, 20px)' }} // Добавим clamp для адаптивности
+>
+  Подойдет если вы ищете надежного и быстрого поставщика или хотите увеличить свой ассортимент.
+</p>
 
       {/* Кнопка с переходом на Телеграм канал */}
       <a
