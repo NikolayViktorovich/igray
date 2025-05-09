@@ -17,7 +17,7 @@ export const FooterAdditionalInfo = () => {
 			href: publicUrl.privacyPolicy(),
         },
         {
-            label: 'Условия использования',
+            label: 'Пользовательское соглашение',
             href: publicUrl.terms(),
         },
     ]
