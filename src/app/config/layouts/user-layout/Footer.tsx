@@ -25,7 +25,7 @@ const SearchInput = () => {
 
             <input
                 ref={ref}
-                className={`border-2 border-gray-375 hover:border-secondary_color focus:border-secondary_color w-full py-4 pr-4 text-lg rounded-[18px] outline-none pl-14 bg-transparent text-primary_color placeholder:text-gray_color lg:w-[390px] transition-all duration-100`}
+                className='border-2 border-gray-375 hover:border-secondary_color focus:border-secondary_color w-full py-4 pr-4 text-lg rounded-[18px] outline-none pl-14 bg-transparent text-primary_color placeholder:text-gray_color lg:w-[390px] transition-all duration-100'
                 placeholder='Быстрый поиск...'
                 type='text'
             />
@@ -36,6 +36,11 @@ const SearchInput = () => {
 export const Footer = () => {
     const platformsListOptions = useMemo(() => {
         return [
+            {
+                title: 'ИгРай',
+                options: ['Бонусы', 'Сертификат', 'О сервисе', 'Партнерам', 'Блог', 'Возврат','Вопросы','Контакты'],
+                hrefs: ['#', '#', '#', '#', '#', '#', '#', '#'],
+            },
             {
                 title: 'PC',
                 options: ['Steam', 'Battle NET', 'Epic Games', 'Microsoft Office', 'Windows'],
@@ -82,6 +87,7 @@ export const Footer = () => {
                                 title={list.title}
                                 options={list.options}
                                 hrefs={list.hrefs}
+                                className={list.title === 'ИгРай' ? 'lg:hidden' : ''} 
                             />
                         ))}
                     </div>
