@@ -4,41 +4,45 @@ import { ReactSVG } from 'react-svg'
 import type { PaymentMethods } from '../model/types'
 
 interface IProps {
-	svg: string
-	text: string
-	title: string
-	onChange: (method: PaymentMethods) => void
-	currentPaymentType: PaymentMethods
-	method: PaymentMethods
+  svg: string
+  text: string
+  title: string
+  onChange: (method: PaymentMethods) => void
+  currentPaymentType: PaymentMethods
+  method: PaymentMethods
+  className?: string
 }
 
 export const MethodPaymentItem: FC<IProps> = ({
-	svg,
-	text,
-	title,
-	onChange,
-	method,
-	currentPaymentType
+  svg,
+  text,
+  title,
+  onChange,
+  method,
+  currentPaymentType,
+  className
 }) => {
-	return (
-		<li
-			onClick={() => onChange(method)}
-			className={`border-[#1f3238] hover:border-opacity-100 transition-border duration-300 border-opacity-10 border rounded-[18px] p-[10px] md:basis-[30%] text-center ${
-				currentPaymentType === method ? 'border-opacity-100' : ''
-			}`}
-		>
-			<button
-				type='button'
-				className='flex sm:flex-col items-center sm:w-full gap-[15px] sm:gap-[6px] '
-			>
-				<ReactSVG src={svg} className='' />
-				<div className='text-left sm:text-center'>
-					<h5 className='text-gray-800 md:text-center'>{title}</h5>
-					<p className='text-[12px] md:w-[120px] font-medium text-center text-[#AFC5BE]'>
-						{text}
-					</p>
-				</div>
-			</button>
-		</li>
-	)
+  const isActive = currentPaymentType === method
+
+  return (
+	<div
+	  onClick={() => onChange(method)}
+	  className={`flex items-center gap-3 px-4 py-3 rounded-[14px] border cursor-pointer transition-colors ${className || ''} ${
+		isActive
+		  ? 'border-[#1f3238] bg-[#F0FBF8]'
+		  : 'border border-[#1f3238]/10 bg-white hover:border-[#1f3238]/50'
+	  }`}
+	>
+	  <div className='flex items-start justify-center w-6 h-6 -translate-y-1'>
+		<ReactSVG
+		  src={svg}
+		  className='w-full h-full [&>svg]:w-full [&>svg]:h-full'
+		/>
+	  </div>
+	  <div className='text-left'>
+		<h5 className='text-sm font-medium text-gray-800'>{title}</h5>
+		<p className='text-[12px] text-[#AFC5BE]'>{text}</p>
+	  </div>
+	</div>
+  )
 }

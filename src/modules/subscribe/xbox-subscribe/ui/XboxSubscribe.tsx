@@ -34,7 +34,7 @@ export const XboxSubscribe = () => {
         defaultValues: {
             email: '',
             promocode: '',
-            paymentMethod: 'CARD' as const
+            paymentMethod: 'SPB' as const
         }
     })
 
