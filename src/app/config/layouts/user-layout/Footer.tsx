@@ -35,12 +35,21 @@ const SearchInput = () => {
 
 export const Footer = () => {
     const platformsListOptions = useMemo(() => {
-        return [
-            {
-                title: 'ИгРай',
-                options: ['Бонусы', 'Сертификат', 'О сервисе', 'Партнерам', 'Блог', 'Возврат','Вопросы','Контакты'],
-                hrefs: ['#', '#', '#', '#', '#', '#', '#', '#'],
-            },
+    return [
+        {
+            title: 'ИгРай',
+            options: ['Бонусы', 'Сертификат', 'О сервисе', 'Партнерам', 'Блог', 'Возврат','Вопросы','Контакты'],
+            hrefs: [
+                '#',      // Бонусы
+                '#',    // Сертификат
+                publicUrl.aboutServices(),       // О сервисе
+                publicUrl.partners(),    // Партнерам
+                '#', // Блог
+                publicUrl.refund(),      // Возврат
+                publicUrl.frequentQuestions(), // Вопросы
+                publicUrl.contacts(),    // Контакты
+            ],
+        },
             {
                 title: 'PC',
                 options: ['Steam', 'Battle NET', 'Epic Games', 'Microsoft Office', 'Windows'],
