@@ -1,14 +1,13 @@
 "use client"
 
 import Link from 'next/link'
-import { publicUrl } from '@/app/config/routes/page-routes/public'
 import AccordionSection from '@/components/user/common/modals/AccordionSection'
 
 export default function TermsPage() {
     return (
         <div className="container mx-auto px-4 py-8">
-            <nav className="mb-6 text-gray-400 text-xs border-t border-gray-200 md:border-t-0 md:ml-auto ml-0">
-                <Link href={publicUrl.home()} className="">
+            <nav className="mb-6 text-gray-400 text-xs border-t border-gray-200 md:border-t-0 flex items-center gap-1 -mt-6 ml-0 md:ml-11">
+                <Link href="/" className="hover:text-gray-600 transition-colors">
                     Главная
                 </Link>
                 <svg
@@ -28,7 +27,7 @@ export default function TermsPage() {
                         d="M9 5l7 7-7 7"
                     />
                 </svg>
-                <span>Пользовательское соглашение</span>
+                <span className="text-gray-500">Пользовательское соглашение</span>
             </nav>
 
             <h1 className="text-[20px] sm:text-[24px] md:text-[30px] lg:text-[36px] font-bold mb-4 bg-white rounded-xl px-4 py-3 text-center w-full max-w-full leading-snug break-words">

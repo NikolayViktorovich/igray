@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 
 export default function PartnersPage() {
   const [offset, setOffset] = useState(0);
@@ -26,8 +27,29 @@ export default function PartnersPage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  return (
+    return (
     <>
+{/* 🔗 Хлебные крошки */}
+<div className="px-4 pt-8">
+  <nav className="mb-6 text-gray-400 text-xs border-t border-gray-200 md:border-t-0 flex items-center gap-1 -mt-6 md:ml-11 ml-0">
+    <Link href="/" className="hover:text-gray-600 transition-colors">
+      Главная
+    </Link>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-3 h-3 text-gray-400 mx-1"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+      strokeWidth="2"
+      style={{ aspectRatio: '1 / 1' }}
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+    </svg>
+    <span className="text-gray-500">Партнерам</span>
+  </nav>
+</div>
+    
       {/* 🔵 Первая секция (синяя) */}
       <section className="relative bg-blue-900 w-full max-w-[95vw] sm:max-w-[98vw] md:max-w-[1500px] min-h-[473px] rounded-[40px] md:rounded-[100px] overflow-hidden mx-auto px-6 pt-10 pb-20 md:pb-0">
         <div className="absolute inset-0 bg-[url('/images/partners/backgr-2.png')] bg-cover bg-center opacity-100 md:hidden"></div>
