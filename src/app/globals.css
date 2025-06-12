@@ -73,6 +73,15 @@
     font-style: normal;
 }
 
+
+@font-face {
+    font-family: 'Steppe';
+    src: 
+        url('./fonts/Steppe-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: medium;
+}
+
 @font-face {
     font-family: 'Montserrat';
     src: url('./fonts/Montserrat-Bold.woff2') format('woff2'),
