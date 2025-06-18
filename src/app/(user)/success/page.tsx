@@ -1,10 +1,11 @@
 'use client'
 
+import { Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import { useEffect } from 'react'
 import Image from 'next/image'
 
-export default function SuccessPage() {
+function SuccessPageContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const InvId = searchParams.get('InvId')
@@ -36,12 +37,12 @@ export default function SuccessPage() {
           <h1 className="font-steppe font-extrabold text-[46px] tracking-[-0.04em] text-[#1F3238] mb-6 text-left">
             Ваш заказ оформлен
           </h1>
-<p className="font-onest font-normal text-[20px] text-left text-[#1F3238] max-w-[600px] mb-2 leading-relaxed">
-  В течение <span className="font-bold">2-3х минут</span> на ваш кошелек автоматически произойдет пополнение!
-</p>
-<p className="font-onest font-normal text-[20px] text-left text-[#1F3238] max-w-[600px] mb-8 leading-relaxed">
-  Если возникнут трудности напишите нам и укажите <span className="font-bold">номер заказа</span>!
-</p>
+          <p className="font-onest font-normal text-[20px] text-left text-[#1F3238] max-w-[600px] mb-2 leading-relaxed">
+            В течение <span className="font-bold">2-3х минут</span> на ваш кошелек автоматически произойдет пополнение!
+          </p>
+          <p className="font-onest font-normal text-[20px] text-left text-[#1F3238] max-w-[600px] mb-8 leading-relaxed">
+            Если возникнут трудности напишите нам и укажите <span className="font-bold">номер заказа</span>!
+          </p>
           <div className="flex items-center justify-between w-full max-w-[560px] min-h-[62px] rounded-[18px] bg-white px-4 mb-8">
             <div className="flex flex-col">
               <span className="font-onest font-medium text-[16px] text-[#4FCA9C]">
@@ -80,5 +81,13 @@ export default function SuccessPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function SuccessPage() {
+  return (
+    <Suspense fallback={<div className="flex justify-center items-center h-screen">Загрузка...</div>}>
+      <SuccessPageContent />
+    </Suspense>
   )
 }
