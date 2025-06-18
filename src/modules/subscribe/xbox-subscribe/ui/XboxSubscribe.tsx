@@ -21,7 +21,6 @@ const accountTypeOptions = [
     { label: 'Старый', value: 'old' }
 ]
 
-// Функция для преобразования строки в число месяцев
 const getDurationInMonths = (period: string): number => {
     switch (period) {
         case 'one_month':
@@ -41,7 +40,7 @@ const getDurationInMonths = (period: string): number => {
         case 'twentyOneMonths':
             return 21
         default:
-            return 1 // Значение по умолчанию
+            return 1 
     }
 }
 
@@ -79,7 +78,6 @@ export const XboxSubscribe = () => {
         return accountTypeOptions.find(item => item.value === selectedAccountType)?.label
     }, [selectedAccountType])
 
-    // Проверка промокода
     const onCheckingPromocode = async () => {
         if (!promocode?.length) {
             form.setError('promocode', { message: 'Введите промокод' })
@@ -104,34 +102,33 @@ export const XboxSubscribe = () => {
     }
 
 const onSubscribe: SubmitHandler<FormSubscribeSchema> = async (data) => {
-  setIsLoading(true)
-  try {
-    const payload = {
-      account_type: selectedAccountType,
-      payment: selectedPaymentMethod,
-      duration: getDurationInMonths(selectedSignaturePeriod),
-      email: data.email,
-      promo: promocode || null,
-      success_url: 'https://igray24.ru/success',
+    setIsLoading(true)
+    try {
+        const payload = {
+            account_type: selectedAccountType,
+            payment: selectedPaymentMethod,
+            duration: getDurationInMonths(selectedSignaturePeriod),
+            email: data.email,
+            promo: promocode || null,
+            success_url: 'https://igray24.ru/success',
+        }
+
+        console.log('Отправляемый payload:', payload)
+
+        const response = await axios.post('https://igray24back.ru/subscription/xbox/create-payment-link', payload)
+        console.log('Ответ API:', response.data)
+
+        const { link } = response.data
+        if (link) {
+            window.location.href = link
+        } else {
+            throw new Error('Платежная ссылка не получена')
+        }
+    } catch (error) {
+        form.setError('email', { message: 'Ошибка при создании платежа. Попробуйте позже.' })
+    } finally {
+        setIsLoading(false)
     }
-
-    console.log('Отправляемый payload:', payload)
-
-    const response = await axios.post('https://igray24back.ru/subscription/xbox/create-payment-link', payload)
-    console.log('Ответ API:', response.data)
-
-    const { link } = response.data
-    if (link) {
-      window.location.href = link
-    } else {
-      throw new Error('Платежная ссылка не получена')
-    }
-  } catch (error: any) {
-    console.error('Ошибка создания платежной ссылки:', error.response?.data || error.message)
-    form.setError('email', { message: 'Ошибка при создании платежа. Попробуйте позже.' })
-  } finally {
-    setIsLoading(false)
-  }
 }
 
     useEffect(() => {
