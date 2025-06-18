@@ -30,7 +30,7 @@ export const ReviewsSlider = () => {
 							userName='MartinaStrike'
 							date='Сен 13, 2023'
 						/>
-					</SwiperSlide>
+					</SwiperSlide> 
 					<SwiperSlide>
 						<ReviewsSlide
 							text='Самый удобный сервис

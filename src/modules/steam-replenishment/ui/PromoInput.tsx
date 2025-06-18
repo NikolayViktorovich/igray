@@ -6,6 +6,7 @@ import { cn } from '@/shared/utils/clsx'
 interface IProps {
 	checkPromo: (code: string) => void
 	discount: number
+	error: string | null
 }
 
 export const PromoInput: FC<IProps> = ({ checkPromo, discount }) => {

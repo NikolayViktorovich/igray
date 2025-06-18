@@ -1,13 +1,13 @@
 export interface FormSubscribeSchema {
-	email: string
-	promocode: string
+    email: string
+    promocode: string
+    paymentMethod: 'CARD' | 'sbp' | 'crypto'
 }
-export type PaymentMethods = 'CARD' | 'SPB' | 'USDT'
+
+export type PaymentMethods = 'CARD' | 'sbp' | 'crypto'
 
 export interface IPaymentInputs {
-	sum: string
-	login: string
-	email: string
+    sum: string
+    login: string
+    email: string
 }
-
-export type Currencies = 'RUB' | 'USD' | 'KZT'

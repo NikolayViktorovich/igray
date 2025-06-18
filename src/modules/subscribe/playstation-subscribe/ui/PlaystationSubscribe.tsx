@@ -1,9 +1,9 @@
 'use client'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
+import axios from 'axios'
 
 import { useServiceStore } from '@/shared/store/service.store'
 import { Heading } from '@/shared/ui/Heading'
@@ -19,17 +19,31 @@ import {
 } from '../model/constants'
 import { FormSubscribeSchema } from '../model/types'
 
-export type PaymentMethods = 'CARD' | 'SPB' | 'USDT'
+export type PaymentMethods = 'CARD' | 'sbp' | 'crypto'
+
+const getDurationInMonths = (period: string): number => {
+    switch (period) {
+        case 'one_month':
+            return 1
+        case 'threeMonths':
+            return 3
+        case 'twelveMonth':
+            return 12
+        default:
+            return 1 
+    }
+}
 
 export const PlaystationSubscribe = () => {
     const [selectedSignaturePeriod, setSelectedSignaturePeriod] = useState(signaturePeriodOptions[0].value)
     const [selectedRate, setSelectedRate] = useState(rateOptions[0].value)
     const [selectedRegion, setSelectedRegion] = useState(regionOptions[0].value)
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethods>('CARD')
+    const [discount, setDiscount] = useState<number | null>(null)
 
     const { setIsModalVisible } = useServiceStore()
 
-    const form = useForm({
+    const form = useForm<FormSubscribeSchema>({
         resolver: zodResolver(formSubscribeValidate),
         defaultValues: {
             email: '',
@@ -52,29 +66,67 @@ export const PlaystationSubscribe = () => {
         return regionOptions.find(item => item.value === selectedRegion)?.label
     }, [selectedRegion])
 
-    const onSubscribe: SubmitHandler<FormSubscribeSchema> = data => {
-        console.log('RESULT', {
-            ...data,
-            region: selectedRegion,
-            rate: selectedRate,
-            signaturePeriod: selectedSignaturePeriod
-        })
-        setIsModalVisible(true)
-    }
-
-    const onCheckingPromocode = () => {
-        if (!promocode.length) {
+    // Проверка промокода
+    const onCheckingPromocode = async () => {
+        if (!promocode?.length) {
             form.setError('promocode', { message: 'Введите промокод' })
             return
         }
-        setIsModalVisible(true)
+
+        try {
+            const response = await axios.post('https://igray24back.ru/subscription/promo/check-promo', { promo: promocode })
+            if (response.data.check) {
+                setDiscount(response.data.discount || 0)
+                form.clearErrors('promocode')
+            } else {
+                form.setError('promocode', { message: 'Недействительный промокод' })
+                setDiscount(null)
+            }
+        } catch (error) {
+            form.setError('promocode', { message: 'Ошибка проверки промокода' })
+            setDiscount(null)
+        }
     }
 
+const onSubscribe: SubmitHandler<FormSubscribeSchema> = async (data) => {
+  try {
+    const payload = {
+      duration: getDurationInMonths(selectedSignaturePeriod),
+      email: data.email,
+      payment: selectedPaymentMethod === 'CARD' ? 'sbp' : selectedPaymentMethod,
+      subscription_type: selectedRate,
+      region: selectedRegion,
+      promo: promocode || null,
+      success_url: 'https://igray24.ru/success',
+    }
+
+    const response = await axios.post('https://igray24back.ru/subscription/ps/create-payment-link', payload)
+    const { link } = response.data
+
+    if (link) {
+      window.location.href = link
+    }
+  } catch (error) {
+    console.error('Ошибка создания платежной ссылки:', error)
+    form.setError('email', { message: 'Ошибка при создании платежа' })
+  }
+}
+
     useEffect(() => {
-        if (promocode.length) {
+        if (promocode?.length) {
             form.clearErrors('promocode')
         }
     }, [promocode, form])
+
+    // Расчет цены с учетом скидки
+    const price = useMemo(() => {
+        const basePriceStr = signaturePeriodOptions.find(item => item.value === selectedSignaturePeriod)?.label.split(' - ')[1] || '1090₽'
+        let basePrice = parseFloat(basePriceStr.replace('₽', ''))
+        if (discount) {
+            basePrice = basePrice * (1 - discount / 100)
+        }
+        return `${basePrice}₽`
+    }, [discount, selectedSignaturePeriod])
 
     return (
         <div className='rounded-[46px] flex justify-center p-6 lg:p-10 bg-white xl_2:w-[620px]'>
@@ -203,6 +255,12 @@ export const PlaystationSubscribe = () => {
                             </div>
                         </div>
 
+                        {discount && (
+                            <div className='text-green-600 text-sm mb-4'>
+                                Скидка {discount}% применена!
+                            </div>
+                        )}
+
                         <MethodsPayment
                             currentPaymentType={selectedPaymentMethod}
                             onChange={(method) => {
@@ -215,7 +273,7 @@ export const PlaystationSubscribe = () => {
                             type='submit'
                             className='bg-bg_color w-full hover:shadow-[0_2px_#469677] mx-auto block py-4 rounded-[18px] text-white border-none shadow-[0_5px_#469677] active:shadow-[0_2px_#469677] active:translate-y-[4px] transition-all'
                         >
-                            Оформить • 1090₽
+                            Оформить • {price}
                         </button>
                     </form>
                 </FormProvider>

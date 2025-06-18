@@ -3,18 +3,17 @@
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
+import axios from 'axios'
 
 import { ModalLayout } from '@/components/user/common/modals/ModalLayout'
 
 import { Spinner } from '@/shared/ui/Spinner'
 import { ProccesingPersonalDataPanel } from '@/shared/ui/proccesing-personal-data-panel/ProccesingPersonalDataPanel'
 
-import { useCheckPromo } from '../api/useCheckPromo'
 import { useGetCurrencyRate } from '../api/useGetCurrencyRate'
 import { usePayment } from '../api/usePayment'
 import { maxSums, minSums } from '../lib/constants'
 import { convertFromRub } from '../lib/utils/convert-to-rub'
-import { countTotalAmoutWithCommission } from '../lib/utils/count-total-amout-with-commission'
 import { extractNumber } from '../lib/utils/extract-number'
 import type { Currencies, IPaymentInputs, PaymentMethods } from '../model/types'
 
@@ -37,33 +36,28 @@ export const SteamReplenishment = () => {
   const [paymentType, setPaymentType] = useState<PaymentMethods>('SPB')
   const [touchedSumInput, setTouchedSumInput] = useState(false)
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [promoError, setPromoError] = useState<string | null>(null)
+  const [appliedPromo, setAppliedPromo] = useState<string>('') 
 
   const {
     register,
     handleSubmit,
     watch,
-    formState: { errors }
+    formState: { errors },
+    setError,
+    clearErrors
   } = useForm<IPaymentInputs>({
     defaultValues: {
+      sum: '100',
       login: '',
-      email: ''
+      email: '',
+      promo: ''
     }
   })
 
-  const {
-    checkPromo,
-    checkPromoIsSuccess,
-    data: discountPromo
-  } = useCheckPromo()
+  const promo = watch('promo')
 
   const { currencyData, currencyIsLoading } = useGetCurrencyRate(currency)
-
-  useEffect(() => {
-    console.log(discountPromo)
-    if (checkPromoIsSuccess) {
-      setDiscount(discountPromo?.discount_percentage || 0)
-    }
-  }, [checkPromoIsSuccess, discountPromo, discountPromo?.discount_percentage])
 
   const {
     sendPayment,
@@ -72,47 +66,68 @@ export const SteamReplenishment = () => {
     sendPaymentPending
   } = usePayment()
 
-  const handleCheckPromo = (promoValue: string) => checkPromo(promoValue)
+  const handleCheckPromo = async (promoValue: string) => {
+    if (!promoValue?.length) {
+      setError('promo', { message: 'Введите промокод' })
+      setPromoError('Введите промокод')
+      setAppliedPromo('')
+      return
+    }
+
+    try {
+      const response = await axios.post('https://igray24back.ru/subscription/promo/check-promo', { promo: promoValue })
+      console.log('Промокод ответ:', response.data)
+      if (response.data.check) {
+        setDiscount(response.data.discount || 0)
+        clearErrors('promo')
+        setPromoError(null)
+        setAppliedPromo(promoValue)
+      } else {
+        setError('promo', { message: 'Недействительный промокод' })
+        setPromoError('Недействительный промокод')
+        setDiscount(0)
+        setAppliedPromo('') 
+      }
+    } catch (error) {
+      console.error('Ошибка проверки промокода:', error)
+      setError('promo', { message: 'Ошибка проверки промокода' })
+      setPromoError('Ошибка проверки промокода')
+      setDiscount(0)
+      setAppliedPromo('')
+    }
+  }
 
   const handleTouchSumInput = () => setTouchedSumInput(true)
 
   const toggleModal = () => setIsModalVisible(prev => !prev)
 
-  const handlePayment: SubmitHandler<IPaymentInputs> = data => {
-    const { login, email } = data
+const handlePayment: SubmitHandler<IPaymentInputs> = data => {
+  const { login, email } = data
 
-    const currentSum = Number(extractNumber(sum))
+  const currentSum = Number(extractNumber(sum))
 
-    if (
-      currentSum >= minSums[currency] &&
-      currentSum <= maxSums[currency]
-    ) {
-      const fetchData = {
-        login,
-        email,
-        amount: Number(
-          convertFromRub(Number(sum), currency, {
-            usdToRub: currencyData?.data,
-            kztToRub: currencyData?.data
-          })
-        ),
-        currency,
-        payment_type: paymentType,
-        amount_after: Number(
-          countTotalAmoutWithCommission(
-            convertFromRub(Number(sum), currency, {
-              usdToRub: currencyData?.data,
-              kztToRub: currencyData?.data
-            }),
-            commission,
-            discount
-          ).toFixed(2)
-        )
-      }
-
-      sendPayment(fetchData)
+  if (
+    currentSum >= minSums[currency] &&
+    currentSum <= maxSums[currency]
+  ) {
+    const fetchData = {
+      login,
+      email,
+      amount: Number(
+        convertFromRub(Number(sum), currency, {
+          usdToRub: currencyData?.data,
+          kztToRub: currencyData?.data
+        })
+      ),
+      currency,
+      payment_type: paymentType,
+      promo: appliedPromo,
+      success_url: 'https://igray24.ru/success',
     }
+
+    sendPayment(fetchData)
   }
+}
 
   const handleChangePaymentType = (paymentType: PaymentMethods) => {
     setPaymentType(paymentType)
@@ -202,6 +217,14 @@ export const SteamReplenishment = () => {
     }
   }, [sum, currency, watch])
 
+  useEffect(() => {
+    if (promo?.length) {
+      clearErrors('promo')
+      setPromoError(null)
+      setAppliedPromo('') 
+    }
+  }, [promo, clearErrors])
+
   return (
     <>
       <form onSubmit={handleSubmit(handlePayment)}>
@@ -239,6 +262,7 @@ export const SteamReplenishment = () => {
           <PromoInput
             discount={discount}
             checkPromo={handleCheckPromo}
+            error={promoError}
           />
 
           <EmailInput register={register} errors={errors} />

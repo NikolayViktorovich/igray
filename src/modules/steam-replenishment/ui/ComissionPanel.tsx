@@ -7,5 +7,5 @@ interface IProps {
 }
 
 export const CommissionPanel: FC<IProps> = () => {
-  return <div>Панель без комиссии</div>
+  return <div></div>
 }

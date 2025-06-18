@@ -1,11 +1,10 @@
 'use client'
-
 import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
+import axios from 'axios'
 
-import { useServiceStore } from '@/shared/store/service.store'
 import { Heading } from '@/shared/ui/Heading'
 import { TextField } from '@/shared/ui/form/TextField'
 import { cn } from '@/shared/utils/clsx'
@@ -22,19 +21,43 @@ const accountTypeOptions = [
     { label: 'Старый', value: 'old' }
 ]
 
+// Функция для преобразования строки в число месяцев
+const getDurationInMonths = (period: string): number => {
+    switch (period) {
+        case 'one_month':
+            return 1
+        case 'fourMonths':
+            return 4
+        case 'sevenMonth':
+            return 7
+        case 'tenMonths':
+            return 10
+        case 'thirteenMonths':
+            return 13
+        case 'sixteenMonths':
+            return 16
+        case 'nineteenMonths':
+            return 19
+        case 'twentyOneMonths':
+            return 21
+        default:
+            return 1 // Значение по умолчанию
+    }
+}
+
 export const XboxSubscribe = () => {
     const [selectedSignaturePeriod, setSelectedSignaturePeriod] = useState(signaturePeriodOptions[0].value)
-    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethods>('CARD')
+    const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethods>('sbp')
     const [selectedAccountType, setSelectedAccountType] = useState(accountTypeOptions[0].value)
-
-    const { setIsModalVisible } = useServiceStore()
+    const [discount, setDiscount] = useState<number | null>(null)
+    const [isLoading, setIsLoading] = useState(false)
 
     const form = useForm<FormSubscribeSchema>({
         resolver: zodResolver(formSubscribeValidate),
         defaultValues: {
             email: '',
             promocode: '',
-            paymentMethod: 'SPB' as const
+            paymentMethod: 'sbp' as const
         }
     })
 
@@ -45,29 +68,71 @@ export const XboxSubscribe = () => {
     }, [selectedSignaturePeriod])
 
     const price = useMemo(() => {
-        return signaturePeriodOptions.find(item => item.value === selectedSignaturePeriod)?.label.split(' - ')[1] || '1090₽'
-    }, [selectedSignaturePeriod])
+        let basePrice = signaturePeriodOptions.find(item => item.value === selectedSignaturePeriod)?.label.split(' - ')[1] || '1090₽'
+        if (discount) {
+            basePrice = parseFloat(basePrice.replace('₽', '')) * (1 - discount / 100) + '₽'
+        }
+        return basePrice
+    }, [discount, selectedSignaturePeriod])
 
     const labelAccountType = useMemo(() => {
         return accountTypeOptions.find(item => item.value === selectedAccountType)?.label
     }, [selectedAccountType])
 
-    const onSubscribe: SubmitHandler<FormSubscribeSchema> = data => {
-        console.log('RESULT', {
-            ...data,
-            signaturePeriod: selectedSignaturePeriod,
-            accountType: selectedAccountType
-        })
-        setIsModalVisible(true)
-    }
-
-    const onCheckingPromocode = () => {
+    // Проверка промокода
+    const onCheckingPromocode = async () => {
         if (!promocode?.length) {
             form.setError('promocode', { message: 'Введите промокод' })
             return
         }
-        setIsModalVisible(true)
+
+        try {
+            const response = await axios.post('https://igray24back.ru/subscription/promo/check-promo', { promo: promocode })
+            console.log('Промокод ответ:', response.data)
+            if (response.data.check) {
+                setDiscount(response.data.discount || 0)
+                form.clearErrors('promocode')
+            } else {
+                form.setError('promocode', { message: 'Недействительный промокод' })
+                setDiscount(null)
+            }
+        } catch (error) {
+            console.error('Ошибка проверки промокода:', error)
+            form.setError('promocode', { message: 'Ошибка проверки промокода' })
+            setDiscount(null)
+        }
     }
+
+const onSubscribe: SubmitHandler<FormSubscribeSchema> = async (data) => {
+  setIsLoading(true)
+  try {
+    const payload = {
+      account_type: selectedAccountType,
+      payment: selectedPaymentMethod,
+      duration: getDurationInMonths(selectedSignaturePeriod),
+      email: data.email,
+      promo: promocode || null,
+      success_url: 'https://igray24.ru/success',
+    }
+
+    console.log('Отправляемый payload:', payload)
+
+    const response = await axios.post('https://igray24back.ru/subscription/xbox/create-payment-link', payload)
+    console.log('Ответ API:', response.data)
+
+    const { link } = response.data
+    if (link) {
+      window.location.href = link
+    } else {
+      throw new Error('Платежная ссылка не получена')
+    }
+  } catch (error: any) {
+    console.error('Ошибка создания платежной ссылки:', error.response?.data || error.message)
+    form.setError('email', { message: 'Ошибка при создании платежа. Попробуйте позже.' })
+  } finally {
+    setIsLoading(false)
+  }
+}
 
     useEffect(() => {
         if (promocode?.length) {
@@ -169,7 +234,7 @@ export const XboxSubscribe = () => {
                                 <TextField
                                     className='pr-32 md:w-80'
                                     name='promocode'
-                                    label='У вас есть промокод?'
+                                label='У вас есть промокод?'
                                     placeholder='Уменьши комиссию...'
                                 />
                                 <button
@@ -182,6 +247,12 @@ export const XboxSubscribe = () => {
                             </div>
                         </div>
 
+                        {discount && (
+                            <div className='text-green-600 text-sm mb-4'>
+                                Скидка {discount}% применена!
+                            </div>
+                        )}
+
                         <MethodsPayment
                             currentPaymentType={selectedPaymentMethod}
                             onChange={(method) => {
@@ -193,8 +264,9 @@ export const XboxSubscribe = () => {
                         <button
                             type='submit'
                             className='bg-bg_color w-full hover:shadow-[0_2px_#469677] mx-auto block py-4 rounded-[14px] text-white border-none shadow-[0_5px_#469677] active:shadow-[0_2px_#469677] active:translate-y-[4px] transition-all'
+                            disabled={isLoading}
                         >
-                            Оформить • {price}
+                            {isLoading ? 'Обработка...' : `Оформить • ${price}`}
                         </button>
                     </form>
                 </FormProvider>

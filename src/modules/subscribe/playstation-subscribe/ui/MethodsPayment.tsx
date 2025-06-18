@@ -1,7 +1,5 @@
 import { FC } from 'react'
-
 import type { PaymentMethods } from '../model/types'
-
 import { MethodPaymentItem } from './MethodsPaymentItem'
 
 interface IProps {
@@ -21,7 +19,7 @@ export const MethodsPayment: FC<IProps> = ({
       <div className='flex flex-col sm:flex-row gap-4 w-full'>
         <MethodPaymentItem
           currentPaymentType={currentPaymentType}
-          method='SPB'
+          method='sbp'
           onChange={onChange}
           svg='/images/icons/spb.svg'
           text='Через приложение вашего банка'
@@ -29,7 +27,7 @@ export const MethodsPayment: FC<IProps> = ({
           className='sm:w-auto'
         />
         <MethodPaymentItem
-          method='USDT'
+          method='crypto'
           currentPaymentType={currentPaymentType}
           onChange={onChange}
           svg='/images/icons/crypto.svg'
