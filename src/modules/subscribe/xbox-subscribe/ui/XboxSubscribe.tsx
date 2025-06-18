@@ -27,7 +27,7 @@ const getDurationInMonths = (period: string): number => {
             return 1
         case 'fourMonths':
             return 4
-        case 'sevenMonth':
+        case 'sevenMonths':
             return 7
         case 'tenMonths':
             return 10
@@ -40,7 +40,7 @@ const getDurationInMonths = (period: string): number => {
         case 'twentyOneMonths':
             return 21
         default:
-            return 1 
+            return 1
     }
 }
 
@@ -86,7 +86,6 @@ export const XboxSubscribe = () => {
 
         try {
             const response = await axios.post('https://igray24back.ru/subscription/promo/check-promo', { promo: promocode })
-            console.log('Промокод ответ:', response.data)
             if (response.data.check) {
                 setDiscount(response.data.discount || 0)
                 form.clearErrors('promocode')
@@ -94,42 +93,41 @@ export const XboxSubscribe = () => {
                 form.setError('promocode', { message: 'Недействительный промокод' })
                 setDiscount(null)
             }
-        } catch (error) {
-            console.error('Ошибка проверки промокода:', error)
+        } catch {
             form.setError('promocode', { message: 'Ошибка проверки промокода' })
             setDiscount(null)
         }
     }
 
-const onSubscribe: SubmitHandler<FormSubscribeSchema> = async (data) => {
-    setIsLoading(true)
-    try {
-        const payload = {
-            account_type: selectedAccountType,
-            payment: selectedPaymentMethod,
-            duration: getDurationInMonths(selectedSignaturePeriod),
-            email: data.email,
-            promo: promocode || null,
-            success_url: 'https://igray24.ru/success',
+    const onSubscribe: SubmitHandler<FormSubscribeSchema> = async (data) => {
+        setIsLoading(true)
+        try {
+            const payload = {
+                account_type: selectedAccountType,
+                payment: selectedPaymentMethod,
+                duration: getDurationInMonths(selectedSignaturePeriod),
+                email: data.email,
+                promo: promocode || null,
+                success_url: 'https://igray24.ru/success',
+            }
+
+            console.log('Отправляемый payload:', payload)
+
+            const response = await axios.post('https://igray24back.ru/subscription/xbox/create-payment-link', payload)
+            console.log('Ответ API:', response.data)
+
+            const { link } = response.data
+            if (link) {
+                window.location.href = link
+            } else {
+                throw new Error('Платежная ссылка не получена')
+            }
+        } catch {
+            form.setError('email', { message: 'Ошибка при создании платежа. Попробуйте позже.' })
+        } finally {
+            setIsLoading(false)
         }
-
-        console.log('Отправляемый payload:', payload)
-
-        const response = await axios.post('https://igray24back.ru/subscription/xbox/create-payment-link', payload)
-        console.log('Ответ API:', response.data)
-
-        const { link } = response.data
-        if (link) {
-            window.location.href = link
-        } else {
-            throw new Error('Платежная ссылка не получена')
-        }
-    } catch (error) {
-        form.setError('email', { message: 'Ошибка при создании платежа. Попробуйте позже.' })
-    } finally {
-        setIsLoading(false)
     }
-}
 
     useEffect(() => {
         if (promocode?.length) {
@@ -231,7 +229,7 @@ const onSubscribe: SubmitHandler<FormSubscribeSchema> = async (data) => {
                                 <TextField
                                     className='pr-32 md:w-80'
                                     name='promocode'
-                                label='У вас есть промокод?'
+                                    label='У вас есть промокод?'
                                     placeholder='Уменьши комиссию...'
                                 />
                                 <button
