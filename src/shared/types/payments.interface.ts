@@ -4,4 +4,6 @@ export interface IPaymentInputs {
 	sum: string
 	login: string
 	email: string
+	promo?: string
+	
 }
