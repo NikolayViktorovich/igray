@@ -5,7 +5,6 @@ import { useEffect, useMemo, useState } from 'react'
 import { FormProvider, SubmitHandler, useForm } from 'react-hook-form'
 import axios from 'axios'
 
-import { useServiceStore } from '@/shared/store/service.store'
 import { Heading } from '@/shared/ui/Heading'
 import { TextField } from '@/shared/ui/form/TextField'
 import { cn } from '@/shared/utils/clsx'
@@ -40,8 +39,7 @@ export const PlaystationSubscribe = () => {
     const [selectedRegion, setSelectedRegion] = useState(regionOptions[0].value)
     const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<PaymentMethods>('CARD')
     const [discount, setDiscount] = useState<number | null>(null)
-
-    const { setIsModalVisible } = useServiceStore()
+    const [isLoading, setIsLoading] = useState(false)
 
     const form = useForm<FormSubscribeSchema>({
         resolver: zodResolver(formSubscribeValidate),
@@ -82,35 +80,39 @@ export const PlaystationSubscribe = () => {
                 form.setError('promocode', { message: 'Недействительный промокод' })
                 setDiscount(null)
             }
-        } catch (error) {
+        } catch {
             form.setError('promocode', { message: 'Ошибка проверки промокода' })
             setDiscount(null)
         }
     }
 
-const onSubscribe: SubmitHandler<FormSubscribeSchema> = async (data) => {
-  try {
-    const payload = {
-      duration: getDurationInMonths(selectedSignaturePeriod),
-      email: data.email,
-      payment: selectedPaymentMethod === 'CARD' ? 'sbp' : selectedPaymentMethod,
-      subscription_type: selectedRate,
-      region: selectedRegion,
-      promo: promocode || null,
-      success_url: 'https://igray24.ru/success',
-    }
+    const onSubscribe: SubmitHandler<FormSubscribeSchema> = async (data) => {
+        setIsLoading(true)
+        try {
+            const payload = {
+                duration: getDurationInMonths(selectedSignaturePeriod),
+                email: data.email,
+                payment: selectedPaymentMethod === 'CARD' ? 'sbp' : selectedPaymentMethod,
+                subscription_type: selectedRate,
+                region: selectedRegion,
+                promo: promocode || null,
+                success_url: 'https://igray24.ru/success',
+            }
 
-    const response = await axios.post('https://igray24back.ru/subscription/ps/create-payment-link', payload)
-    const { link } = response.data
+            const response = await axios.post('https://igray24back.ru/subscription/ps/create-payment-link', payload)
+            const { link } = response.data
 
-    if (link) {
-      window.location.href = link
+            if (link) {
+                window.location.href = link
+            } else {
+                throw new Error('Платежная ссылка не получена')
+            }
+        } catch {
+            form.setError('email', { message: 'Ошибка при создании платежа' })
+        } finally {
+            setIsLoading(false)
+        }
     }
-  } catch (error) {
-    console.error('Ошибка создания платежной ссылки:', error)
-    form.setError('email', { message: 'Ошибка при создании платежа' })
-  }
-}
 
     useEffect(() => {
         if (promocode?.length) {
@@ -123,7 +125,7 @@ const onSubscribe: SubmitHandler<FormSubscribeSchema> = async (data) => {
         const basePriceStr = signaturePeriodOptions.find(item => item.value === selectedSignaturePeriod)?.label.split(' - ')[1] || '1090₽'
         let basePrice = parseFloat(basePriceStr.replace('₽', ''))
         if (discount) {
-            basePrice = basePrice * (1 - discount / 100)
+            basePrice = parseFloat((basePrice * (1 - discount / 100)).toFixed(2))
         }
         return `${basePrice}₽`
     }, [discount, selectedSignaturePeriod])
@@ -272,8 +274,9 @@ const onSubscribe: SubmitHandler<FormSubscribeSchema> = async (data) => {
                         <button
                             type='submit'
                             className='bg-bg_color w-full hover:shadow-[0_2px_#469677] mx-auto block py-4 rounded-[18px] text-white border-none shadow-[0_5px_#469677] active:shadow-[0_2px_#469677] active:translate-y-[4px] transition-all'
+                            disabled={isLoading}
                         >
-                            Оформить • {price}
+                            {isLoading ? 'Обработка...' : `Оформить • ${price}`}
                         </button>
                     </form>
                 </FormProvider>
